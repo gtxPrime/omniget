@@ -711,6 +711,8 @@
       "col_action": "Действие",
       "status_installed": "Установлено",
       "status_missing": "Отсутствует",
+      "source_managed": "Managed",
+      "download_managed": "Get Managed",
       "not_found": "не найдено",
       "install": "Установить",
       "update": "Обновить",

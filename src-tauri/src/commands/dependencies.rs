@@ -9,6 +9,11 @@ pub struct DependencyStatus {
     pub name: String,
     pub installed: bool,
     pub version: Option<String>,
+    /// Where the binary was found: "managed" (downloaded by OmniGet),
+    /// "system" (found on the user's PATH), "flatpak", or "missing".
+    pub source: String,
+    /// Resolved absolute path to the binary, if found.
+    pub path: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -20,6 +25,12 @@ pub struct DependencyVariantInfo {
 
 #[tauri::command]
 pub async fn check_dependencies() -> Result<Vec<DependencyStatus>, String> {
+    let (ytdlp_result, ffmpeg_result) = tokio::join!(
+        dependencies::find_tool_with_source("yt-dlp"),
+        dependencies::find_tool_with_source("ffmpeg"),
+    );
+
+    // Also get version strings (separate, cheap calls reuse cached paths)
     let (ytdlp_version, ffmpeg_version) = tokio::join!(
         dependencies::check_version("yt-dlp"),
         dependencies::check_version("ffmpeg"),
@@ -32,24 +43,45 @@ pub async fn check_dependencies() -> Result<Vec<DependencyStatus>, String> {
         None
     };
 
+    let ytdlp_source = ytdlp_result
+        .as_ref()
+        .map(|(_, s)| s.to_string())
+        .unwrap_or_else(|| "missing".to_string());
+    let ytdlp_path = ytdlp_result.map(|(p, _)| p.to_string_lossy().to_string());
+
+    let ffmpeg_source = ffmpeg_result
+        .as_ref()
+        .map(|(_, s)| s.to_string())
+        .unwrap_or_else(|| "missing".to_string());
+    let ffmpeg_path = ffmpeg_result.map(|(p, _)| p.to_string_lossy().to_string());
+
     Ok(vec![
         DependencyStatus {
             name: "yt-dlp".into(),
             installed: ytdlp_version.is_some(),
             version: ytdlp_version,
+            source: ytdlp_source,
+            path: ytdlp_path,
         },
         DependencyStatus {
             name: "FFmpeg".into(),
             installed: ffmpeg_version.is_some(),
             version: ffmpeg_version,
+            source: ffmpeg_source,
+            path: ffmpeg_path,
         },
         DependencyStatus {
             name: "PDFium".into(),
             installed: pdfium_installed,
             version: pdfium_version,
+            source: if pdfium_installed { "managed".into() } else { "missing".into() },
+            path: pdfium::pdfium_target_dir()
+                .filter(|_| pdfium_installed)
+                .map(|p| p.to_string_lossy().to_string()),
         },
     ])
 }
+
 
 #[tauri::command]
 pub async fn check_ytdlp_available() -> Result<bool, String> {

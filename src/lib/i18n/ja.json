@@ -711,6 +711,8 @@
       "col_action": "Action",
       "status_installed": "Installed",
       "status_missing": "Missing",
+      "source_managed": "Managed",
+      "download_managed": "Get Managed",
       "not_found": "見つかりません",
       "install": "インストール",
       "update": "更新",

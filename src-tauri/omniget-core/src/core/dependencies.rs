@@ -111,6 +111,72 @@ pub async fn find_tool(tool: &str) -> Option<PathBuf> {
     None
 }
 
+/// Like `find_tool` but also returns a source tag: "flatpak", "managed", or "system".
+/// Returns `None` if the tool is not found anywhere.
+pub async fn find_tool_with_source(tool: &str) -> Option<(PathBuf, &'static str)> {
+    let name = bin_name(tool);
+    let version_flag = version_flag_for(tool);
+
+    #[cfg(target_os = "linux")]
+    {
+        let flatpak_path = PathBuf::from("/app/bin").join(&name);
+        if flatpak_path.exists() {
+            return Some((flatpak_path, "flatpak"));
+        }
+    }
+
+    // Check managed bin dir
+    if let Some(managed_path) = managed_bin_dir().map(|d| d.join(&name)) {
+        if managed_path.exists() {
+            let check = {
+                let managed = managed_path.clone();
+                let vf = version_flag.to_string();
+                tokio::task::spawn_blocking(move || {
+                    crate::core::process::std_command(&managed)
+                        .arg(&vf)
+                        .stdout(Stdio::null())
+                        .stderr(Stdio::null())
+                        .status()
+                        .ok()
+                        .filter(|s| s.success())
+                })
+                .await
+                .ok()
+                .flatten()
+            };
+            if check.is_some() {
+                return Some((managed_path, "managed"));
+            }
+        }
+    }
+
+    // System PATH
+    let result = {
+        let name2 = name.clone();
+        let vf = version_flag.to_string();
+        tokio::task::spawn_blocking(move || {
+            crate::core::process::std_command(&name2)
+                .arg(&vf)
+                .stdout(Stdio::null())
+                .stderr(Stdio::null())
+                .status()
+                .ok()
+                .filter(|s| s.success())
+        })
+        .await
+        .ok()
+        .flatten()
+    };
+
+    if result.is_some() {
+        let abs = resolve_absolute_path(&name);
+        return Some((abs, "system"));
+    }
+
+    None
+}
+
+
 /// Resolve a bare binary name to its absolute path via `where` (Windows)
 /// or `which` (Unix). Returns the original name as fallback.
 fn resolve_absolute_path(bin_name: &str) -> PathBuf {
