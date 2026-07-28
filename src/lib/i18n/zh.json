@@ -334,6 +334,7 @@
     "phase_starting": "正在启动下载引擎...",
     "phase_connecting": "正在连接服务器...",
     "phase_preparing": "正在准备下载...",
+    "phase_merging": "Merging audio & video...",
     "cancel": "取消",
     "clear_finished": "清除已完成",
     "clear_confirm": "清除所有已完成下载？",

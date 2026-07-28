@@ -334,6 +334,7 @@
     "phase_starting": "Εκκίνηση μηχανισμού μεταφόρτωσης...",
     "phase_connecting": "Σύνδεση στον εξυπηρετητή...",
     "phase_preparing": "Προετοιμασία μεταφόρτωσης...",
+    "phase_merging": "Merging audio & video...",
     "cancel": "Ακύρωση",
     "clear_finished": "Εκκαθάριση των ολοκληρωμένων",
     "clear_confirm": "Clear all finished downloads?",

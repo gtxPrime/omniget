@@ -993,6 +993,8 @@
         <span class="item-detail">{$t('downloads.phase_starting')}</span>
       {:else if item.phase === "connecting"}
         <span class="item-detail">{$t('downloads.phase_connecting')}</span>
+      {:else if item.phase === "merging"}
+        <span class="item-detail phase-merging-badge">{$t('downloads.phase_merging')}</span>
       {:else}
         <span class="item-detail">{item.platform.charAt(0).toUpperCase() + item.platform.slice(1)}</span>
         <div class="item-stats">
@@ -1006,7 +1008,7 @@
             <span>{formatSpeed(item.speed)}</span>
             {#if formatEta(item.etaSeconds)}
               <span class="stats-sep">&middot;</span>
-              <span>ETA {formatEta(item.etaSeconds)}</span>
+              <span class="eta-pill">ETA {formatEta(item.etaSeconds)}</span>
             {/if}
             <DownloadSpeedGraph points={getSpeedHistory(item.id)} />
           {/if}
@@ -1477,6 +1479,20 @@
 
   .stats-sep {
     opacity: 0.5;
+  }
+
+  .phase-merging-badge {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .eta-pill {
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
   }
 
   .item-error {

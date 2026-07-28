@@ -334,6 +334,7 @@
     "phase_starting": "Запуск движка скачивания…",
     "phase_connecting": "Подключение к серверу…",
     "phase_preparing": "Подготовка к скачиванию…",
+    "phase_merging": "Merging audio & video...",
     "cancel": "Отмена",
     "clear_finished": "Очистить завершённые",
     "clear_confirm": "Очистить все завершённые загрузки?",

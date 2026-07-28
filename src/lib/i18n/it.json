@@ -334,6 +334,7 @@
     "phase_starting": "Avvio motore di download...",
     "phase_connecting": "Connessione al server...",
     "phase_preparing": "Preparazione download...",
+    "phase_merging": "Merging audio & video...",
     "cancel": "Annulla",
     "clear_finished": "Cancella completati",
     "clear_confirm": "Clear all finished downloads?",

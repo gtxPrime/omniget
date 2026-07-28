@@ -206,6 +206,7 @@ export type TranslationKeys =
   | 'downloads.pause_all'
   | 'downloads.phase_connecting'
   | 'downloads.phase_fetching_info'
+  | 'downloads.phase_merging'
   | 'downloads.phase_preparing'
   | 'downloads.phase_starting'
   | 'downloads.quality_hint'
