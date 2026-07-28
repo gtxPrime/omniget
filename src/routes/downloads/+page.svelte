@@ -1119,7 +1119,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: calc(100vh - var(--padding) * 4);
+    flex: 1;
+    min-height: 0;
     gap: calc(var(--padding) * 1.5);
     color: var(--gray);
   }
@@ -1136,6 +1137,10 @@
     max-width: 800px;
     margin: 0 auto;
     width: 100%;
+    /* Scroll within the fixed-height pane (parent has overflow:hidden) */
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
   }
 
   .downloads-page h2 {
