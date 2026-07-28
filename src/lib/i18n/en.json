@@ -3911,6 +3911,12 @@
     "upload_failed": "Telegram upload failed.",
     "error_no_chat": "Please select or enter a destination chat ID or @username.",
     "error_no_bot_token": "Please enter a valid Bot Token.",
+    "error_invalid_bot_token": "Invalid Bot Token format. Expected format: 123456789:ABCdef...",
+    "error_no_file": "No source file provided for upload.",
+    "send_as_label": "Send Media As",
+    "send_as_video": "Video (Streamable)",
+    "send_as_document": "Document / File",
+    "send_as_audio": "Audio Track",
     "send_to_telegram": "Upload to Telegram"
   }
 }

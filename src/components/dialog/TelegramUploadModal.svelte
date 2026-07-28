@@ -7,6 +7,7 @@
     telegramUploadFile,
     calculateTelegramChunks,
     type TelegramUploadTier,
+    type TelegramSendAsMode,
     type TelegramChat,
     telegramGetChats,
   } from "$lib/study-telegram-bridge";
@@ -36,6 +37,7 @@
   let customThumbPath = $state<string | null>(null);
   let caption = $state("");
   let tier = $state<TelegramUploadTier>("free");
+  let sendAs = $state<TelegramSendAsMode>("video");
 
   let chats = $state<TelegramChat[]>([]);
   let loadingChats = $state(false);
@@ -45,10 +47,18 @@
   let uploadSuccess = $state(false);
   let uploadError = $state<string | null>(null);
 
+  function autoDetectSendAs(fileNameOrPath: string): TelegramSendAsMode {
+    const ext = fileNameOrPath.split(".").pop()?.toLowerCase() ?? "";
+    if (["mp4", "mkv", "avi", "mov", "webm", "flv", "m4v"].includes(ext)) return "video";
+    if (["mp3", "m4a", "flac", "aac", "ogg", "wav", "opus"].includes(ext)) return "audio";
+    return "document";
+  }
+
   $effect(() => {
     if (open) {
       customFileName = defaultName || filePath.split(/[/\\]/).pop() || "";
       customThumbPath = defaultThumb || null;
+      sendAs = autoDetectSendAs(customFileName || filePath);
       uploading = false;
       uploadSuccess = false;
       uploadError = null;
@@ -106,7 +116,16 @@
     return trimmed;
   }
 
+  function validateBotToken(token: string): boolean {
+    return /^\d+:[A-Za-z0-9_-]+$/.test(token.trim());
+  }
+
   async function handleUpload() {
+    if (!filePath.trim()) {
+      uploadError = $t("telegram.error_no_file") as string;
+      return;
+    }
+
     const rawTarget = authMode === "bot_token"
       ? destChatId
       : (selectedChatId ? String(selectedChatId) : destChatId);
@@ -117,9 +136,15 @@
       uploadError = $t("telegram.error_no_chat") as string;
       return;
     }
-    if (authMode === "bot_token" && !botToken.trim()) {
-      uploadError = $t("telegram.error_no_bot_token") as string;
-      return;
+    if (authMode === "bot_token") {
+      if (!botToken.trim()) {
+        uploadError = $t("telegram.error_no_bot_token") as string;
+        return;
+      }
+      if (!validateBotToken(botToken)) {
+        uploadError = $t("telegram.error_invalid_bot_token") as string;
+        return;
+      }
     }
 
     uploading = true;
@@ -135,6 +160,7 @@
         caption: caption.trim() || undefined,
         botToken: authMode === "bot_token" ? botToken.trim() : undefined,
         tier,
+        sendAs,
       });
 
       if (res.success || res.messageId) {
@@ -229,6 +255,33 @@
             />
           </div>
         {/if}
+
+        <div class="field-group">
+          <label class="field-label">{$t('telegram.send_as_label')}</label>
+          <div class="send-as-pills">
+            <button
+              class="send-as-pill"
+              class:active={sendAs === "video"}
+              onclick={() => { sendAs = "video"; }}
+            >
+              🎬 {$t('telegram.send_as_video')}
+            </button>
+            <button
+              class="send-as-pill"
+              class:active={sendAs === "document"}
+              onclick={() => { sendAs = "document"; }}
+            >
+              📄 {$t('telegram.send_as_document')}
+            </button>
+            <button
+              class="send-as-pill"
+              class:active={sendAs === "audio"}
+              onclick={() => { sendAs = "audio"; }}
+            >
+              🎵 {$t('telegram.send_as_audio')}
+            </button>
+          </div>
+        </div>
 
         <div class="field-group">
           <label class="field-label" for="tg-filename">{$t('telegram.custom_filename_label')}</label>
@@ -338,7 +391,7 @@
     background: var(--popup-bg, #1a1a1a);
     border: 1px solid var(--content-border, rgba(255, 255, 255, 0.1));
     border-radius: var(--border-radius, 12px);
-    width: 480px;
+    width: 490px;
     max-width: 90vw;
     display: flex;
     flex-direction: column;
@@ -433,6 +486,33 @@
     box-sizing: border-box;
   }
 
+  .send-as-pills,
+  .tier-pills {
+    display: flex;
+    gap: 8px;
+  }
+
+  .send-as-pill,
+  .tier-pill {
+    flex: 1;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray);
+    background: var(--button);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .send-as-pill.active,
+  .tier-pill.active {
+    background: var(--button-elevated);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
   .thumb-row {
     display: flex;
     align-items: center;
@@ -447,28 +527,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 250px;
-  }
-
-  .tier-pills {
-    display: flex;
-    gap: 8px;
-  }
-
-  .tier-pill {
-    padding: 6px 12px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--gray);
-    background: var(--button);
-    border: 1px solid transparent;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  .tier-pill.active {
-    background: var(--button-elevated);
-    color: var(--accent);
-    border-color: var(--accent);
   }
 
   .split-warning {

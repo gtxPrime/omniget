@@ -1344,3 +1344,75 @@ export async function enqueueTelegramDownloadBatch(args: {
   }
   return { batchId, studyIds };
 }
+
+export const TELEGRAM_FREE_LIMIT_BYTES = 2 * 1024 * 1024 * 1024; // 2.0 GB
+export const TELEGRAM_PREMIUM_LIMIT_BYTES = 4 * 1024 * 1024 * 1024; // 4.0 GB
+
+export type TelegramUploadTier = "free" | "premium";
+export type TelegramSendAsMode = "video" | "document" | "audio";
+
+export type TelegramUploadArgs = {
+  filePath: string;
+  destChatId: string | number;
+  customFileName?: string;
+  customThumbnailPath?: string;
+  caption?: string;
+  botToken?: string;
+  tier?: TelegramUploadTier;
+  sendAs?: TelegramSendAsMode;
+};
+
+export function calculateTelegramChunks(
+  fileSize: number,
+  tier: TelegramUploadTier = "free",
+): { requiresSplit: boolean; limitBytes: number; partCount: number; partSize: number } {
+  const limitBytes = tier === "premium" ? TELEGRAM_PREMIUM_LIMIT_BYTES : TELEGRAM_FREE_LIMIT_BYTES;
+  if (fileSize <= limitBytes) {
+    return { requiresSplit: false, limitBytes, partCount: 1, partSize: fileSize };
+  }
+  const partCount = Math.ceil(fileSize / limitBytes);
+  const partSize = Math.ceil(fileSize / partCount);
+  return { requiresSplit: true, limitBytes, partCount, partSize };
+}
+
+export async function telegramUploadFile(args: TelegramUploadArgs): Promise<{ success: boolean; messageId?: number }> {
+  const sendAs = args.sendAs ?? "video";
+  if (args.botToken) {
+    return pluginInvoke<{ success: boolean; messageId?: number }>("telegram", "telegram_bot_upload_file", {
+      botToken: args.botToken,
+      chatId: String(args.destChatId),
+      filePath: args.filePath,
+      customFileName: args.customFileName ?? null,
+      customThumbnailPath: args.customThumbnailPath ?? null,
+      caption: args.caption ?? null,
+      sendAs,
+    }).catch(async () => {
+      return invoke<{ success: boolean; messageId?: number }>("telegram_bot_upload_file", {
+        botToken: args.botToken,
+        chatId: String(args.destChatId),
+        filePath: args.filePath,
+        customFileName: args.customFileName ?? null,
+        customThumbnailPath: args.customThumbnailPath ?? null,
+        caption: args.caption ?? null,
+        sendAs,
+      });
+    });
+  }
+  return pluginInvoke<{ success: boolean; messageId?: number }>("telegram", "telegram_user_upload_file", {
+    chatId: args.destChatId,
+    filePath: args.filePath,
+    customFileName: args.customFileName ?? null,
+    customThumbnailPath: args.customThumbnailPath ?? null,
+    caption: args.caption ?? null,
+    sendAs,
+  }).catch(async () => {
+    return invoke<{ success: boolean; messageId?: number }>("telegram_user_upload_file", {
+      chatId: args.destChatId,
+      filePath: args.filePath,
+      customFileName: args.customFileName ?? null,
+      customThumbnailPath: args.customThumbnailPath ?? null,
+      caption: args.caption ?? null,
+      sendAs,
+    });
+  });
+}
