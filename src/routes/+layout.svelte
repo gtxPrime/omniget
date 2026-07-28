@@ -16,7 +16,7 @@
   import CommandPalette from "$components/shell/CommandPalette.svelte";
   import { setCommandPaletteItems } from "$lib/stores/command-palette-store.svelte";
   import { refreshUpdateInfo } from "$lib/stores/update-store.svelte";
-  import { startClipboardMonitor, stopClipboardMonitor } from "$lib/stores/clipboard-monitor";
+  import { startClipboardMonitor, stopClipboardMonitor, onClipboardUrl } from "$lib/stores/clipboard-monitor";
   import { initChangelog } from "$lib/stores/changelog-store.svelte";
   import { needsOnboarding } from "$lib/stores/onboarding-store.svelte";
   import { isYtdlpAvailable, isDepsChecked, refreshYtdlpStatus } from "$lib/stores/dependency-store.svelte";
@@ -156,11 +156,20 @@
 
   $effect(() => {
     if (settings?.download.clipboard_detection) {
+      onClipboardUrl((clipboardUrl) => {
+        queueExternalPrefill({ action: "prefill", url: clipboardUrl });
+        showToast("info", $t("toast.clipboard_detected") as string);
+        if (page.url.pathname !== "/") {
+          goto("/");
+        }
+      });
       startClipboardMonitor();
     } else {
+      onClipboardUrl(null);
       stopClipboardMonitor();
     }
     return () => {
+      onClipboardUrl(null);
       stopClipboardMonitor();
     };
   });
