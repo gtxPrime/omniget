@@ -1,4 +1,4 @@
-{
+﻿{
   "confirm_close": {
     "title": "Λήψεις σε εξέλιξη",
     "message": "Έχετε {{count}} ενεργή(ες) λήψη(εις). Το κλείσιμο τώρα θα τις ακυρώσει.",
@@ -1071,12 +1071,15 @@
     "mode_mute": "Χωρις ηχο",
     "quality": "Ποιότητα",
     "quality_best": "Καλυτερη ποιοτητα",
+    "quality_2160p": "4K (2160p)",
+    "quality_1440p": "2K (1440p)",
     "quality_1080p": "Full HD (1080p)",
     "quality_720p": "HD (720p) — ελαφρυτερο",
     "quality_480p": "Μεσαιο (480p) — γρηγορο",
     "quality_360p": "Χαμηλο (360p) — πολυ ελαφρυ",
     "quality_best_short": "Καλύτερο",
     "quality_audio": "Ήχος",
+    "quality_from_formats": "Showing resolutions available for this video",
     "view_formats": "Προβολή μορφών",
     "hide_formats": "Απόκρυψη μορφών",
     "no_formats": "Δεν υπάρχουν διαθέσιμες μορφές για αυτό το βίντεο",

@@ -87,6 +87,21 @@
   let formatFetchGeneration = $state(0);
   let referer = $state("");
 
+  // Derived quality data from real yt-dlp format info.
+  // These update after the user loads formats via FormatSelector.
+  let availableHeights = $derived(
+    formats.length > 0
+      ? [...new Set(
+          formats
+            .filter(f => f.has_video && typeof f.height === "number" && f.height > 0)
+            .map(f => f.height as number)
+        )].sort((a, b) => b - a)
+      : null
+  );
+  let hasAudioOnly = $derived(
+    formats.some(f => f.has_audio && !f.has_video)
+  );
+
   type CookieAccount = {
     slug: string;
     alias: string;
@@ -1095,7 +1110,7 @@
               <summary class="options-toggle">{$t('omnibox.options')}</summary>
               <div class="options-content">
                 <DownloadModeSelector bind:downloadMode onChange={() => { selectedFormatId = null; }} />
-                <QualityPicker bind:selectedQuality selectedFormatId />
+                <QualityPicker bind:selectedQuality selectedFormatId {availableHeights} {hasAudioOnly} />
                 {#if cookieAccounts.length > 1}
                   <CookieAccountPicker accounts={cookieAccounts} bind:selectedSlug={selectedCookieSlug} />
                 {/if}

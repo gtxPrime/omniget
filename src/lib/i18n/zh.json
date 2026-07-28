@@ -1,4 +1,4 @@
-{
+﻿{
   "confirm_close": {
     "title": "下载进行中",
     "message": "您有 {{count}} 个活动下载。立即关闭将会取消它们。",
@@ -1071,12 +1071,15 @@
     "mode_mute": "无声",
     "quality": "质量",
     "quality_best": "最佳质量",
+    "quality_2160p": "4K (2160p)",
+    "quality_1440p": "2K (1440p)",
     "quality_1080p": "全高清 (1080p)",
     "quality_720p": "高清 (720p) — 较小",
     "quality_480p": "中等 (480p) — 快速",
     "quality_360p": "低清 (360p) — 极小",
     "quality_best_short": "最佳",
     "quality_audio": "音频",
+    "quality_from_formats": "Showing resolutions available for this video",
     "view_formats": "查看格式",
     "hide_formats": "隐藏格式",
     "no_formats": "该视频没有可用格式",

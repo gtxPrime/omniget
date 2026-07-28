@@ -1,4 +1,4 @@
-{
+﻿{
   "confirm_close": {
     "title": "ダウンロード中",
     "message": "{{count}} 件のダウンロードが進行中です。今閉じるとキャンセルされます。",
@@ -1071,12 +1071,15 @@
     "mode_mute": "音声なし",
     "quality": "画質",
     "quality_best": "最高画質",
+    "quality_2160p": "4K (2160p)",
+    "quality_1440p": "2K (1440p)",
     "quality_1080p": "フルHD (1080p)",
     "quality_720p": "HD (720p) — 軽量",
     "quality_480p": "中画質 (480p) — 高速",
     "quality_360p": "低画質 (360p) — 超軽量",
     "quality_best_short": "最高",
     "quality_audio": "音声",
+    "quality_from_formats": "Showing resolutions available for this video",
     "view_formats": "フォーマットを表示",
     "hide_formats": "フォーマットを隠す",
     "no_formats": "この動画で利用可能なフォーマットはありません",

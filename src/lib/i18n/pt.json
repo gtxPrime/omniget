@@ -1,4 +1,4 @@
-{
+﻿{
   "confirm_close": {
     "title": "Downloads em andamento",
     "message": "Você tem {{count}} download(s) ativo(s). Fechar agora vai cancelá-los.",
@@ -1071,12 +1071,15 @@
     "mode_mute": "Sem Som",
     "quality": "Qualidade",
     "quality_best": "Melhor qualidade",
+    "quality_2160p": "4K (2160p)",
+    "quality_1440p": "2K (1440p)",
     "quality_1080p": "Full HD (1080p)",
     "quality_720p": "HD (720p) — leve",
     "quality_480p": "Médio (480p) — rápido",
     "quality_360p": "Baixo (360p) — muito leve",
     "quality_best_short": "Melhor",
     "quality_audio": "Áudio",
+    "quality_from_formats": "Showing resolutions available for this video",
     "view_formats": "Ver formatos",
     "hide_formats": "Ocultar formatos",
     "no_formats": "Nenhum formato disponível para este vídeo",

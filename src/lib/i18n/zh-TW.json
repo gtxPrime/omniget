@@ -1,4 +1,4 @@
-{
+﻿{
   "confirm_close": {
     "title": "下載進行中",
     "message": "您有 {{count}} 個進行中的下載。立即關閉將會取消它們。",
@@ -1071,12 +1071,15 @@
     "mode_mute": "靜音",
     "quality": "畫質",
     "quality_best": "最佳畫質",
+    "quality_2160p": "4K (2160p)",
+    "quality_1440p": "2K (1440p)",
     "quality_1080p": "1080p",
     "quality_720p": "720p",
     "quality_480p": "480p",
     "quality_360p": "360p",
     "quality_best_short": "最佳",
     "quality_audio": "音訊",
+    "quality_from_formats": "Showing resolutions available for this video",
     "view_formats": "檢視格式",
     "hide_formats": "隱藏格式",
     "no_formats": "此影片沒有可用格式",

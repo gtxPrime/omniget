@@ -1,4 +1,4 @@
-{
+﻿{
   "confirm_close": {
     "title": "Загрузки в процессе",
     "message": "Активных загрузок: {{count}}. Если закрыть сейчас, они будут отменены.",
@@ -1071,12 +1071,15 @@
     "mode_mute": "Без звука",
     "quality": "Качество",
     "quality_best": "Лучшее качество",
+    "quality_2160p": "4K (2160p)",
+    "quality_1440p": "2K (1440p)",
     "quality_1080p": "Full HD (1080p)",
     "quality_720p": "HD (720p) — легче",
     "quality_480p": "Среднее (480p) — быстро",
     "quality_360p": "Низкое (360p) — минимальный размер",
     "quality_best_short": "Лучшее",
     "quality_audio": "Аудио",
+    "quality_from_formats": "Showing resolutions available for this video",
     "view_formats": "Посмотреть форматы",
     "hide_formats": "Скрыть форматы",
     "no_formats": "Для этого видео нет доступных форматов",
