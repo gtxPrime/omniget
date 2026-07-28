@@ -3885,5 +3885,32 @@
       "test_title": "Tracking notifications are working",
       "test_body": "You will see notifications like this when your packages move."
     }
+  },
+  "telegram": {
+    "upload_title": "Upload to Telegram / Leech Bot",
+    "auth_user_session": "User Session",
+    "auth_bot_token": "Bot Token",
+    "destination_chat": "Destination Chat / Channel",
+    "dest_placeholder": "@channel_name, chat_id or -100123456789",
+    "user_session_hint": "Select from your chat list or type a Chat ID / @channel_username",
+    "bot_token_label": "Bot Token",
+    "bot_chat_id_label": "Target Chat ID / Username",
+    "custom_filename_label": "Custom Filename & Extension",
+    "custom_filename_hint": "Rename file or change extension before uploading to Telegram",
+    "custom_thumbnail_label": "Custom Thumbnail",
+    "pick_thumbnail": "Pick image from disk…",
+    "caption_label": "Upload Caption (Optional)",
+    "caption_placeholder": "Add a caption or notes for Telegram media post...",
+    "tier_limit_label": "Telegram File Limit Mode",
+    "tier_free": "Free Tier",
+    "tier_premium": "Premium Tier",
+    "split_warning": "File size ({{size}}) exceeds {{limit}} Telegram limit. Will auto-split into {{parts}} parts.",
+    "start_upload": "Start Telegram Upload",
+    "uploading": "Uploading to Telegram...",
+    "upload_success": "Uploaded to Telegram successfully!",
+    "upload_failed": "Telegram upload failed.",
+    "error_no_chat": "Please select or enter a destination chat ID or @username.",
+    "error_no_bot_token": "Please enter a valid Bot Token.",
+    "send_to_telegram": "Upload to Telegram"
   }
 }
