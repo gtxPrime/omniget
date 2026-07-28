@@ -1,4 +1,4 @@
-﻿{
+{
   "confirm_close": {
     "title": "Download in corso",
     "message": "Hai {{count}} download attivi. Chiudere ora li annullerà.",

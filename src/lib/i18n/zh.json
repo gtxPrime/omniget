@@ -1,4 +1,4 @@
-﻿{
+{
   "confirm_close": {
     "title": "下载进行中",
     "message": "您有 {{count}} 个活动下载。立即关闭将会取消它们。",

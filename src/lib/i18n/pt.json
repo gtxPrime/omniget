@@ -1,4 +1,4 @@
-﻿{
+{
   "confirm_close": {
     "title": "Downloads em andamento",
     "message": "Você tem {{count}} download(s) ativo(s). Fechar agora vai cancelá-los.",

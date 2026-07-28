@@ -1,4 +1,4 @@
-﻿{
+{
   "confirm_close": {
     "title": "Téléchargements en cours",
     "message": "Vous avez {{count}} téléchargement(s) actif(s). Fermer maintenant va les annuler.",

@@ -1,4 +1,4 @@
-﻿{
+{
   "confirm_close": {
     "title": "Descargas en curso",
     "message": "Tienes {{count}} descarga(s) activa(s). Si cierras ahora se cancelarán.",
