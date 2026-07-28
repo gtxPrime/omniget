@@ -12,6 +12,7 @@
     type TelegramChat,
     telegramGetChats,
   } from "$lib/study-telegram-bridge";
+  import { onMount } from "svelte";
 
   let {
     open = false,
@@ -54,6 +55,18 @@
     if (["mp3", "m4a", "flac", "aac", "ogg", "wav", "opus"].includes(ext)) return "audio";
     return "document";
   }
+
+  function onKeydown(e: KeyboardEvent) {
+    if (open && e.key === "Escape" && !uploading) {
+      e.preventDefault();
+      onClose();
+    }
+  }
+
+  onMount(() => {
+    window.addEventListener("keydown", onKeydown);
+    return () => window.removeEventListener("keydown", onKeydown);
+  });
 
   $effect(() => {
     if (open) {
@@ -580,6 +593,32 @@
     border-radius: 50%;
     border-top-color: #fff;
     animation: spin 0.8s linear infinite;
+  }
+
+  .input-full:focus-visible,
+  .select-full:focus-visible,
+  .textarea-full:focus-visible,
+  .tab-btn:focus-visible,
+  .send-as-pill:focus-visible,
+  .tier-pill:focus-visible,
+  .button:focus-visible,
+  .close:focus-visible {
+    outline: 2px solid var(--accent, #3b82f6);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 535px) {
+    .dialog {
+      width: 100vw;
+      max-width: 100vw;
+      border-radius: 0;
+      height: 100vh;
+      max-height: 100vh;
+    }
+    .send-as-pills,
+    .tier-pills {
+      flex-direction: column;
+    }
   }
 
   @keyframes spin {
