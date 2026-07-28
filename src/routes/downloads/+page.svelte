@@ -27,6 +27,7 @@
   import ReencodeDialog from "$components/dialog/ReencodeDialog.svelte";
   import ToolsPanel from "$components/downloads/ToolsPanel.svelte";
   import VideoOpsOverlay from "$components/downloads/VideoOpsOverlay.svelte";
+  import { getSettings, updateSettings } from "$lib/stores/settings-store.svelte";
   import { locale as i18nLocale } from "$lib/i18n";
   import { get } from "svelte/store";
   import timeAgo from "$lib/time-ago";
@@ -504,6 +505,21 @@
             {$t('downloads.history_clear')}
           </button>
         {/if}
+        <select
+          class="speed-limit-selector"
+          value={getSettings()?.download.speed_limit || "unlimited"}
+          onchange={(e) => {
+            const val = e.currentTarget.value;
+            updateSettings({ download: { speed_limit: val === "unlimited" ? "" : val } });
+          }}
+          title={$t('settings.download.speed_limit') as string}
+        >
+          <option value="unlimited">⚡ Unlimited</option>
+          <option value="1M">1 MB/s</option>
+          <option value="2M">2 MB/s</option>
+          <option value="5M">5 MB/s</option>
+          <option value="10M">10 MB/s</option>
+        </select>
         <button
           class="history-toggle"
           class:on={viewMode === "history"}
@@ -1493,6 +1509,17 @@
     border-radius: 4px;
     font-size: 11px;
     font-weight: 500;
+  }
+
+  .speed-limit-selector {
+    padding: 4px 8px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--button);
+    border: 1px solid var(--content-border);
+    border-radius: calc(var(--border-radius) - 4px);
+    cursor: pointer;
   }
 
   .item-error {
