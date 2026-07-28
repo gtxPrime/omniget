@@ -300,6 +300,16 @@
   let historyEntries = $state<HistoryEntry[]>([]);
   let historyLoading = $state(false);
 
+  async function openFileFolder(filePath: string) {
+    try {
+      await invoke("reveal_file", { path: filePath });
+    } catch {
+      try {
+        await invoke("open_path_default", { path: filePath });
+      } catch {}
+    }
+  }
+
   async function loadHistory() {
     historyLoading = true;
     try {
@@ -900,6 +910,18 @@
             {/if}
           </button>
         {:else if item.status === "complete"}
+          {#if item.filePath}
+            <button
+              class="action-icon-btn"
+              onclick={() => openFileFolder(item.filePath!)}
+              aria-label={$t('downloads.open_folder')}
+              title={$t('downloads.open_folder')}
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+              </svg>
+            </button>
+          {/if}
           {#if item.filePath && item.queueKind === "video"}
             <button
               class="action-icon-btn"
