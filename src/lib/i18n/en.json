@@ -3917,6 +3917,12 @@
     "send_as_video": "Video (Streamable)",
     "send_as_document": "Document / File",
     "send_as_audio": "Audio Track",
-    "send_to_telegram": "Upload to Telegram"
+    "send_to_telegram": "Upload to Telegram",
+    "err_bot_not_started": "Bot not started by user. Open Telegram, search your bot, and press /start first.",
+    "err_bot_not_member": "Bot is not in the destination chat. Add your bot as Administrator with 'Post Messages' permission.",
+    "err_chat_not_found": "Destination chat not found. Verify the @username or numeric Chat ID (-100...).",
+    "err_unauthorized": "Invalid Bot Token. Check token from @BotFather.",
+    "err_bot_file_too_large": "File exceeds Telegram Bot API limit (50MB). Switch to 'User Session' mode for files up to 2GB/4GB.",
+    "err_rate_limit": "Telegram rate limit reached. Please wait a moment before retrying."
   }
 }

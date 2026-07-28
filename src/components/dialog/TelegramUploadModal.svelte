@@ -6,6 +6,7 @@
   import {
     telegramUploadFile,
     calculateTelegramChunks,
+    translateTelegramError,
     type TelegramUploadTier,
     type TelegramSendAsMode,
     type TelegramChat,
@@ -173,8 +174,9 @@
         uploadError = $t("telegram.upload_failed") as string;
       }
     } catch (e: any) {
-      uploadError = typeof e === "string" ? e : e.message ?? ($t("telegram.upload_failed") as string);
-      showToast("error", uploadError!);
+      const rawErr = typeof e === "string" ? e : e.message ?? ($t("telegram.upload_failed") as string);
+      uploadError = translateTelegramError(rawErr, (key) => $t(key) as string);
+      showToast("error", uploadError);
     } finally {
       uploading = false;
     }

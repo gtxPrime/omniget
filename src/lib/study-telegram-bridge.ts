@@ -1375,6 +1375,31 @@ export function calculateTelegramChunks(
   return { requiresSplit: true, limitBytes, partCount, partSize };
 }
 
+export function translateTelegramError(errorString: string, tr?: (key: string) => string): string {
+  const lower = errorString.toLowerCase();
+  const t = tr ?? ((k) => k);
+
+  if (lower.includes("blocked by the user") || lower.includes("can't initiate conversation") || lower.includes("bot was blocked")) {
+    return t("telegram.err_bot_not_started");
+  }
+  if (lower.includes("not a member") || lower.includes("not an admin") || lower.includes("kicked") || lower.includes("rights to send") || lower.includes("not enough rights")) {
+    return t("telegram.err_bot_not_member");
+  }
+  if (lower.includes("chat not found") || lower.includes("chat_invalid")) {
+    return t("telegram.err_chat_not_found");
+  }
+  if (lower.includes("unauthorized") || lower.includes("invalid token")) {
+    return t("telegram.err_unauthorized");
+  }
+  if (lower.includes("file_too_large") || lower.includes("entity too large") || lower.includes("file is too big")) {
+    return t("telegram.err_bot_file_too_large");
+  }
+  if (lower.includes("too many requests") || lower.includes("retry after")) {
+    return t("telegram.err_rate_limit");
+  }
+  return errorString;
+}
+
 export async function telegramUploadFile(args: TelegramUploadArgs): Promise<{ success: boolean; messageId?: number }> {
   const sendAs = args.sendAs ?? "video";
   if (args.botToken) {
