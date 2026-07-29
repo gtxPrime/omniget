@@ -330,6 +330,8 @@ export async function telegramListChats(force = false): Promise<TelegramChat[]> 
   return items;
 }
 
+export const telegramGetChats = telegramListChats;
+
 export function invalidateChatsCache() {
   chatsCache = null;
 }
