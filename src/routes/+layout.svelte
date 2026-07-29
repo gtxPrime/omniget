@@ -65,13 +65,13 @@
     page.url.pathname.startsWith("/about"),
   );
 
-  let DebugPanel = $state<Component | null>(null);
-  let OnboardingWizard = $state<Component | null>(null);
-  let ChangelogDialog = $state<Component | null>(null);
-  let ConfirmCloseDialog = $state<Component | null>(null);
-  let ShortcutsDialog = $state<Component | null>(null);
-  let LegalDialog = $state<Component | null>(null);
-  let RecoveryDialog = $state<Component | null>(null);
+  let DebugPanel = $state<any>(null);
+  let OnboardingWizard = $state<any>(null);
+  let ChangelogDialog = $state<any>(null);
+  let ConfirmCloseDialog = $state<any>(null);
+  let ShortcutsDialog = $state<any>(null);
+  let LegalDialog = $state<any>(null);
+  let RecoveryDialog = $state<any>(null);
 
   function handleExternalUrlEvent(event: Omit<ExternalUrlEvent, "id">) {
     if (event.action === "prefill") {
