@@ -28,6 +28,7 @@
     /** "managed" | "system" | "flatpak" | "missing" */
     source: string;
     path: string | null;
+    outdated: boolean;
   };
 
   let settings = $derived(getSettings());

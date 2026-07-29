@@ -14,6 +14,8 @@ pub struct DependencyStatus {
     pub source: String,
     /// Resolved absolute path to the binary, if found.
     pub path: Option<String>,
+    /// `true` when version was read and is below supported floor.
+    pub outdated: bool,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -55,6 +57,12 @@ pub async fn check_dependencies() -> Result<Vec<DependencyStatus>, String> {
         .unwrap_or_else(|| "missing".to_string());
     let ffmpeg_path = ffmpeg_result.map(|(p, _)| p.to_string_lossy().to_string());
 
+    let ytdlp_outdated = ytdlp_version
+        .as_deref()
+        .and_then(crate::core::ytdlp::ytdlp_version_is_supported)
+        .map(|supported| !supported)
+        .unwrap_or(false);
+
     Ok(vec![
         DependencyStatus {
             name: "yt-dlp".into(),
@@ -62,6 +70,7 @@ pub async fn check_dependencies() -> Result<Vec<DependencyStatus>, String> {
             version: ytdlp_version,
             source: ytdlp_source,
             path: ytdlp_path,
+            outdated: ytdlp_outdated,
         },
         DependencyStatus {
             name: "FFmpeg".into(),
@@ -69,6 +78,7 @@ pub async fn check_dependencies() -> Result<Vec<DependencyStatus>, String> {
             version: ffmpeg_version,
             source: ffmpeg_source,
             path: ffmpeg_path,
+            outdated: false,
         },
         DependencyStatus {
             name: "PDFium".into(),
@@ -78,6 +88,7 @@ pub async fn check_dependencies() -> Result<Vec<DependencyStatus>, String> {
             path: pdfium::pdfium_target_dir()
                 .filter(|_| pdfium_installed)
                 .map(|p| p.to_string_lossy().to_string()),
+            outdated: false,
         },
     ])
 }

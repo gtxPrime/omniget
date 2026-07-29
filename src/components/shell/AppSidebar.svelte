@@ -5,17 +5,17 @@
   import type { NavItem } from "$lib/nav-config";
 
   let {
-    primaryNav,
-    appNav,
-    pluginNav,
-    badgeLabel,
-    badgeCount,
+    primaryNav = [],
+    appNav = [],
+    pluginNav = [],
+    badgeLabel = "",
+    badgeCount = 0,
   }: {
-    primaryNav: NavItem[];
-    appNav: NavItem[];
-    pluginNav: NavItem[];
-    badgeLabel: string;
-    badgeCount: number;
+    primaryNav?: NavItem[];
+    appNav?: NavItem[];
+    pluginNav?: NavItem[];
+    badgeLabel?: string;
+    badgeCount?: number;
   } = $props();
 
   let pluginsExpanded = $state(true);

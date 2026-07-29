@@ -1,7 +1,7 @@
 <script lang="ts">
   import { t } from "$lib/i18n";
 
-  let { downloadMode = $bindable("auto" as "auto" | "audio" | "mute"), onChange } = $props();
+  let { downloadMode = $bindable("auto" as "auto" | "audio" | "mute"), onChange = undefined } = $props();
 </script>
 
 <div class="mode-group">
@@ -57,7 +57,7 @@
     justify-content: center;
     gap: 6px;
     padding: 8px 12px;
-    font-size: 12.5px;
+    font-size: var(--text-sm);
     font-weight: 500;
     color: var(--gray);
     background: none;

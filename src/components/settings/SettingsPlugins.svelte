@@ -136,6 +136,7 @@
                 version={dep.version}
                 source={dep.source}
                 path={dep.path}
+                outdated={dep.outdated}
                 busy={installingDep === dep.name}
                 onInstall={(variant) => onInstallDep(dep.name, variant)}
                 onAfterCustomFile={onRefresh}

@@ -14,16 +14,16 @@
     name: string;
     installed: boolean;
     version: string | null;
-    /** "managed" | "system" | "flatpak" | "missing" */
     source?: string;
     /** Absolute path where the binary was found */
     path?: string | null;
+    outdated?: boolean;
     busy: boolean;
     onInstall: (variant: string | null) => void | Promise<void>;
     onAfterCustomFile?: () => void | Promise<void>;
   };
 
-  let { name, installed, version, source = "missing", path = null, busy, onInstall, onAfterCustomFile }: Props =
+  let { name, installed, version, source = "missing", path = null, outdated = false, busy, onInstall, onAfterCustomFile }: Props =
     $props();
 
   let variants = $state<DependencyVariantInfo[]>([]);
@@ -147,7 +147,11 @@
   </td>
   <td class="deps-cell-status">
     <div class="deps-status-group">
-      {#if installed}
+      {#if installed && outdated}
+        <span class="deps-status deps-status-outdated" title={$t("settings.dependencies.outdated_hint") as string}>
+          {$t("settings.dependencies.status_outdated")}
+        </span>
+      {:else if installed}
         <span class="deps-status deps-status-ok">{$t("settings.dependencies.status_installed")}</span>
       {:else}
         <span class="deps-status deps-status-missing">{$t("settings.dependencies.status_missing")}</span>
@@ -265,6 +269,10 @@
   .deps-status-ok {
     background: color-mix(in srgb, var(--success, #16a34a) 18%, transparent);
     color: var(--success, #16a34a);
+  }
+  .deps-status-outdated {
+    background: color-mix(in srgb, var(--danger) 18%, transparent);
+    color: var(--danger);
   }
   .deps-status-missing {
     background: color-mix(in srgb, var(--text) 8%, transparent);
