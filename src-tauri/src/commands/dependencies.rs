@@ -32,10 +32,20 @@ pub async fn check_dependencies() -> Result<Vec<DependencyStatus>, String> {
         dependencies::find_tool_with_source("ffmpeg"),
     );
 
-    // Also get version strings (separate, cheap calls reuse cached paths)
+    // Extract versions from the already-found paths — no second find required.
     let (ytdlp_version, ffmpeg_version) = tokio::join!(
-        dependencies::check_version("yt-dlp"),
-        dependencies::check_version("ffmpeg"),
+        async {
+            match ytdlp_result.as_ref() {
+                Some((path, _)) => dependencies::check_version_at_path(path, "yt-dlp").await,
+                None => None,
+            }
+        },
+        async {
+            match ffmpeg_result.as_ref() {
+                Some((path, _)) => dependencies::check_version_at_path(path, "ffmpeg").await,
+                None => None,
+            }
+        },
     );
 
     let pdfium_installed = pdfium::is_installed();

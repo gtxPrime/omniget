@@ -216,47 +216,43 @@ fn version_flag_for(tool: &str) -> &'static str {
     }
 }
 
-pub async fn check_version(tool: &str) -> Option<String> {
-    let _timer_start = std::time::Instant::now();
-    let path = find_tool(tool).await?;
+/// Read the version string from a tool binary at a known path.
+/// This avoids re-running tool discovery when the path is already known.
+pub async fn check_version_at_path(path: &std::path::Path, tool: &str) -> Option<String> {
     let version_flag = version_flag_for(tool);
-    let output = {
-        let path = path.clone();
-        let vf = version_flag.to_string();
-        tokio::task::spawn_blocking(move || {
-            crate::core::process::std_command(&path)
-                .arg(&vf)
-                .stdout(Stdio::piped())
-                .stderr(Stdio::piped())
-                .output()
-        })
-        .await
-        .ok()?
-        .ok()?
-    };
+    let path = path.to_path_buf();
+    let vf = version_flag.to_string();
+    let output = tokio::task::spawn_blocking(move || {
+        crate::core::process::std_command(&path)
+            .arg(&vf)
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .output()
+    })
+    .await
+    .ok()?
+    .ok()?;
 
     if !output.status.success() {
-        tracing::debug!(
-            "[perf] check_version({}) took {:?}",
-            tool,
-            _timer_start.elapsed()
-        );
         return None;
     }
 
     let stdout = String::from_utf8_lossy(&output.stdout);
     let first_line = stdout.lines().next().unwrap_or("");
 
-    let result = if tool == "ffmpeg" || tool == "ffprobe" {
+    if tool == "ffmpeg" || tool == "ffprobe" {
         first_line.split_whitespace().nth(2).map(|s| s.to_string())
-    } else if tool == "yt-dlp" {
-        Some(first_line.trim().to_string())
     } else if tool == "aria2c" {
         first_line.split_whitespace().nth(2).map(|s| s.to_string())
     } else {
         Some(first_line.trim().to_string())
-    };
+    }
+}
 
+pub async fn check_version(tool: &str) -> Option<String> {
+    let _timer_start = std::time::Instant::now();
+    let path = find_tool(tool).await?;
+    let result = check_version_at_path(&path, tool).await;
     tracing::debug!(
         "[perf] check_version({}) took {:?}",
         tool,
@@ -264,6 +260,7 @@ pub async fn check_version(tool: &str) -> Option<String> {
     );
     result
 }
+
 
 pub fn replace_managed_binary(
     temp: &std::path::Path,
