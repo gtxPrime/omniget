@@ -182,7 +182,6 @@ pub async fn find_tool_with_source(tool: &str) -> Option<(PathBuf, &'static str)
     None
 }
 
-
 /// Resolve a bare binary name to its absolute path via `where` (Windows)
 /// or `which` (Unix). Returns the original name as fallback.
 fn resolve_absolute_path(bin_name: &str) -> PathBuf {
@@ -260,7 +259,6 @@ pub async fn check_version(tool: &str) -> Option<String> {
     );
     result
 }
-
 
 pub fn replace_managed_binary(
     temp: &std::path::Path,

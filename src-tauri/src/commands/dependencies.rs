@@ -94,7 +94,11 @@ pub async fn check_dependencies() -> Result<Vec<DependencyStatus>, String> {
             name: "PDFium".into(),
             installed: pdfium_installed,
             version: pdfium_version,
-            source: if pdfium_installed { "managed".into() } else { "missing".into() },
+            source: if pdfium_installed {
+                "managed".into()
+            } else {
+                "missing".into()
+            },
             path: pdfium::pdfium_target_dir()
                 .filter(|_| pdfium_installed)
                 .map(|p| p.to_string_lossy().to_string()),
@@ -102,7 +106,6 @@ pub async fn check_dependencies() -> Result<Vec<DependencyStatus>, String> {
         },
     ])
 }
-
 
 #[tauri::command]
 pub async fn check_ytdlp_available() -> Result<bool, String> {
