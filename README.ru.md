@@ -323,6 +323,12 @@ sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file lib
 
 OmniGet переводится на [Weblate](https://hosted.weblate.org/engage/omniget/). Выберите язык, переводите в браузере, и Weblate сам откроет pull request.
 
+### Участники
+
+Спасибо всем участникам, сделавшим вклад в этот проект!
+
+[![Участники](https://contrib.rocks/image?repo=tonhowtf/omniget)](https://github.com/tonhowtf/omniget/graphs/contributors)
+
 ## Уведомление для владельцев платформ
 
 Если вы представляете указанную платформу и у вас есть вопросы, напишите на **tonhowtf@gmail.com** с корпоративного адреса. Платформа будет убрана из списка сразу же.

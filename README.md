@@ -332,6 +332,12 @@ Found a bug or have a feature idea? [Open an issue](https://github.com/tonhowtf/
 
 OmniGet is translated on [Weblate](https://hosted.weblate.org/engage/omniget/). Pick a language, translate in your browser, and Weblate opens a pull request automatically.
 
+### Contributors
+
+Thanks to all contributors who have participated in this project!
+
+[![Contributors](https://contrib.rocks/image?repo=tonhowtf/omniget)](https://github.com/tonhowtf/omniget/graphs/contributors)
+
 ### Developing plugins
 
 OmniGet's Courses, Telegram, and Convert features are all plugins — Rust dynamic libraries built on [`omniget-plugin-sdk`](src-tauri/omniget-plugin-sdk) — and third-party plugins are welcome. The [Plugin Development Guide](docs/plugin-development.md) covers the architecture, a quick start from the [plugin template](https://github.com/tonhowtf/omniget-plugin-template), the manifest and host API, honest notes on ABI stability, and how to get listed in the [plugin registry](https://github.com/tonhowtf/omniget-plugins).
