@@ -2482,7 +2482,7 @@ pub async fn download_video(
                     }
                 }
                 if line.contains("[Merger]") || line.contains("[FixupM3u8]") || line.contains("[VideoConvertor]") || (line.contains("[ffmpeg]") && line.to_lowercase().contains("merg")) {
-                    let merging_progress = max_reported.max(95.0).min(98.0);
+                    let merging_progress = max_reported.max(95.0).min(98.0).max(max_reported);
                     let _ = progress_tx
                         .send(ProgressUpdate::phase("merging", merging_progress))
                         .await;
